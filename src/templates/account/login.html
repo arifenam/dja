@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container my-5 mx-auto w-50">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Login</div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'account_login' %}"> {% csrf_token %}
+                        {% for error in non_field_errors %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{error}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                        {% endfor %} 
+                        <div class="mb-3">
+                          <label for="{{form.login.id_for_label}}" class="form-label">Email address</label>
+                          <input name="{{form.login.html_name}}" type="text"  class="form-control" id="{{form.login.id_for_label}}" aria-describedby="emailHelp">
+                          <span class="text-danger"> {{form.login.errors}}</span>
+
+                        </div>
+                        <div class="mb-3">
+                          <label for="{{form.password.id_for_label}}" class="form-label">Password</label>
+                          <input type="password" name="{{form.password.html_name}}" required class="form-control" id="{{form.password.id_for_label}}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="my-5"><!-- Add margin to separate the form and footer -->
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

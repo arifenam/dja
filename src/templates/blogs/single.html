@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>
+{% if single_post.meta_title %}
+{{ single_post.meta_title }}
+{% else %}
+{{ single_post.title }}
+{% endif %}
+</title>
+<meta name="description" content="{% if single_post.meta_description %}{{ single_post.meta_description }}{% else %}{{ single_post.content|striptags|slice:":160" }}{% endif %}">
+{% endblock head %}
+
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="text-center mb-4">{{ single_post.title }}</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a class='text-decoration-none text-danger' href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">{{ single_post.categories.title }}</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ single_post.title }}</li>
+                </ol>
+            </nav>
+            <p class="text-muted">Posted on {{ single_post.created|date:"F d, Y" }}</p>
+            <hr>
+            <div class="text-center">
+                {% if single_post.featured_img %}
+                    <img src="{{ single_post.featured_img.url }}" alt="{{ single_post.title }}" width="720" height="430">
+                {% endif %}
+            </div>
+            <hr>
+            <div class="content mb-5">
+                {% load social_share %}
+                <h4>Share</h4>
+                {% post_to_facebook object_or_url "<p style='color: green;'>facebook</p>" %}
+                {% post_to_linkedin object_or_url %}
+                {% post_to_telegram "New Song: " object_or_url %}
+                <hr>
+                {{ single_post.content | safe }}
+                <div class="py-5">
+                    {% for comment in comments %}
+                        <div class="comments" style="padding: 10px;">
+                            <p class="font-weight-bold">
+                                {{ comment.name }}
+                                <span class="text-muted font-weight-normal">
+                                    {{ comment.created_on|date:"F d, Y" }}
+                                </span>
+                            </p>
+                            {{ comment.body | linebreaks }}
+                        </div>
+                    {% empty %}
+                        <p>No comments yet. Be the first to comment!</p>
+                    {% endfor %}
+                    <div class="card-body">
+                        {% if new_comment %}
+                            <div class="alert alert-success" role="alert">
+                                Your comment is awaiting moderation.
+                            </div>
+                        {% else %}
+                            <h3>Leave a comment</h3>
+                            <form method="post" style="margin-top: 1.3em;">
+                                {{ comment_form.as_p }}
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header">Sidebar</div>
+                <div class="card-body">
+                    <p class="card-text">This is some text within a card body.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
