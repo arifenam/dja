@@ -15,7 +15,7 @@
 
 <div class="container my-5">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-lg-9 col-md-12">
             <h1 class="text-center mb-4">{{ single_post.title }}</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -28,7 +28,7 @@
             <hr>
             <div class="text-center">
                 {% if single_post.featured_img %}
-                    <img src="{{ single_post.featured_img.url }}" alt="{{ single_post.title }}" width="720" height="430">
+                    <img src="{{ single_post.featured_img.url }}" alt="{{ single_post.title }}" class="img-fluid">
                 {% endif %}
             </div>
             <hr>
@@ -71,7 +71,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-12">
             <div class="card bg-light mb-3">
                 <div class="card-header">Sidebar</div>
                 <div class="card-body">
